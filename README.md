@@ -10,13 +10,13 @@ Tweakgit is a small Python3 script which makes your work with git in Debian/Ubun
 
 This script uses tips written in [LeaseWebLabs blog](http://www.leaseweblabs.com/2013/08/git-tip-beautiful-colored-and-readable-output/).
 
-## Requirements
+### Requirements
 
   * Recent Debian-based Linux (Debian/Ubuntu/Mint/etc)
   * Python3 installed (sudo apt-get install python3)
   * No external dependencies
 
-## Installation
+### Installation
 
 To run tweakgit and improve your Git experience you must run
 
@@ -27,7 +27,7 @@ NB: The script will execute the following sudo command:
 
   * sudo apt-get install colordiff
   
-## Disclaimer
+### Disclaimer
 
 This code will update the following files
 
