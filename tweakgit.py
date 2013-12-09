@@ -7,6 +7,7 @@ import re
 import os
 import subprocess
 import configparser
+import time
 
 # get user home directory
 home_dir = os.path.expanduser('~')
@@ -18,6 +19,17 @@ git_prompt_regexp = r'# Add git branch if its present to PS1'
 # flag for content change
 content_changed = False
 
+def check_file_exists(file_path):
+    if not os.path.exists(file_path):
+        print('ERROR: File "%s" was not found' % file_path)
+        exit(1)
+
+def backup_file(file_path):
+    check_file_exists(file_path)
+
+    # use current time to generate unique bkp file and not overwrite existing backup file
+    backup_time = int(time.time())
+    subprocess.call(['cp', file_path, '%s.bkp-%d' % (file_path, backup_time)])
 
 def show_branch_in_shell(bashrc_content):
     global content_changed
@@ -54,6 +66,9 @@ def add_git_aliases():
         print('.gitconfig file has been created')
         return
 
+    # backup if exists
+    backup_file(home_gitconfig_path)
+
     # optional (if exists, merge 2 configs and write the result)
     config = configparser.ConfigParser()
     config.read(home_gitconfig_path)
@@ -71,12 +86,14 @@ def add_git_aliases():
 
 
 def main():
-    path_bash = os.path.join(home_dir, '.bashrc')
-    if not os.path.isfile(path_bash):
-        print('bashrc is not found')
-        exit(1)
+    check_file_exists(bashrc_dist_filename)
+    check_file_exists(gitconfig_dist_filename)
 
-    # read local .bashrc file
+    path_bash = os.path.join(home_dir, '.bashrc')
+    check_file_exists(path_bash)
+
+    # backup .bashrc and read it then
+    backup_file(path_bash)
     file_handler = open(path_bash, 'rU')
     bashrc_content = file_handler.read()
     file_handler.close()
@@ -89,7 +106,7 @@ def main():
     add_git_aliases()
 
 
-    if content_changed is True:
+    if content_changed:
         # save changed bashrc
         file_handler = open(path_bash, 'w')
         file_handler.write(bashrc_content)
