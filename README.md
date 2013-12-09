@@ -34,7 +34,7 @@ This code will update the following files
   * ~/.bashrc
   * ~/.gitconfig
 
-Before you run the script make sure you make a backup of the above files.
+Before you run the script make sure you make a backup of the above files to avoid any data loss.
 
 
 
